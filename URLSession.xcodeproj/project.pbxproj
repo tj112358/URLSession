@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		524391AD2F83EF2500BA59AD /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 524391AC2F83EF2500BA59AD /* SwiftSoup */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		5243919D2F83EE9C00BA59AD /* URLSession.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = URLSession.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				524391AD2F83EF2500BA59AD /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = URLSession;
 			packageProductDependencies = (
+				524391AC2F83EF2500BA59AD /* SwiftSoup */,
 			);
 			productName = URLSession;
 			productReference = 5243919D2F83EE9C00BA59AD /* URLSession.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 524391942F83EE9C00BA59AD;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				524391AB2F83EF2500BA59AD /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5243919E2F83EE9C00BA59AD /* Products */;
 			projectDirPath = "";
@@ -332,6 +341,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		524391AB2F83EF2500BA59AD /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.13.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		524391AC2F83EF2500BA59AD /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 524391AB2F83EF2500BA59AD /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 524391952F83EE9C00BA59AD /* Project object */;
 }
