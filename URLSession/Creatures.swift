@@ -12,71 +12,84 @@ import SwiftSoup
 class Creatures {
     
     private struct Returned: Codable {
-        var Season: Season
-        var Teams: [Teams]
-        var OtherSeriesTeamsAndDriversUrls: OtherSeriesTeamsAndDriversUrls
+        var season: Season
+        var teams: [Team]
+        var otherSeriesTeamsAndDriversUrls: OtherSeriesTeamsAndDriversUrls
+
+        enum CodingKeys: String, CodingKey {
+            case season = "Season"
+            case teams = "Teams"
+            case otherSeriesTeamsAndDriversUrls = "OtherSeriesTeamsAndDriversUrls"
+        }
     }
-    
-    private struct Season: Codable {
-        var SeasonId: Int
-        var SeasonName: String
-        var SeasonStartDate: String
-        var SeasonEndDate: String
-        var SeasonTypeCode: String
-        var HasResultFeed: Bool
-    }
-    
-    private struct Teams: Codable {
-        var TeamId: Int
-        var TeamFullName: String
-        var TLA: String
-        var CountryId: Int
-        var CountryName: String
-        var CountryCode: String
-        var Drivers: [Drivers]
-        var logoImage: LogoImage
-        var carImage: CarImage
-    }
-    
-    private struct Drivers: Codable {
-        var DriverId: Int
-        var FullName: String
-        var DisplayName: String
-        var TLA: String
-        var CountryId: Int
-        var CountryName: String
-        var CountryCode: String
-        var CarNumber: Int
-        var DriverImage: DriverImage
-        var Support: String
-        var DriverWithoutBackgroundImage: DriverWithoutBackgroundImage
-    }
-    
-    private struct LogoImage: Codable {
-        var path: String
-        var url: String
-    }
-    
-    private struct CarImage: Codable {
-        var path: String
-        var url: String
-    }
-    
-    private struct DriverImage: Codable {
-        var path: String
-        var url: String
-    }
-    
-    private struct DriverWithoutBackgroundImage: Codable {
-        var path: String
-        var url: String
-    }
-    
+
     private struct OtherSeriesTeamsAndDriversUrls: Codable {
-        var f1: String
-        var f2: String
-        var f3: String
+        var f1, f2, f3: String
     }
+
+    private struct Season: Codable {
+        var seasonID: Int
+        var seasonName, seasonStartDate, seasonEndDate, seasonTypeCode: String
+        var hasResultFeed: Bool
+
+        enum CodingKeys: String, CodingKey {
+            case seasonID = "SeasonId"
+            case seasonName = "SeasonName"
+            case seasonStartDate = "SeasonStartDate"
+            case seasonEndDate = "SeasonEndDate"
+            case seasonTypeCode = "SeasonTypeCode"
+            case hasResultFeed = "HasResultFeed"
+        }
+    }
+
+    private struct Team: Codable {
+        var teamID: Int
+        var teamFullName, tla: String
+        var countryID: Int
+        var countryName, countryCode: String
+        var drivers: [Driver]
+        var logoImage, carImage: Image
+
+        enum CodingKeys: String, CodingKey {
+            case teamID = "TeamId"
+            case teamFullName = "TeamFullName"
+            case tla = "TLA"
+            case countryID = "CountryId"
+            case countryName = "CountryName"
+            case countryCode = "CountryCode"
+            case drivers = "Drivers"
+            case logoImage, carImage
+        }
+    }
+
+    private struct Image: Codable {
+        var path: String
+        var url: String
+    }
+
+    private struct Driver: Codable {
+        var driverID: Int
+        var fullName, displayName, tla: String
+        var countryID: Int
+        var countryName, countryCode: String
+        var carNumber: Int
+        var driverImage: Image
+        var support: String
+        var driverWithoutBackgroundImage: Image
+
+        enum CodingKeys: String, CodingKey {
+            case driverID = "DriverId"
+            case fullName = "FullName"
+            case displayName = "DisplayName"
+            case tla = "TLA"
+            case countryID = "CountryId"
+            case countryName = "CountryName"
+            case countryCode = "CountryCode"
+            case carNumber = "CarNumber"
+            case driverImage, support, driverWithoutBackgroundImage
+        }
+    }
+
     
     
     
@@ -95,28 +108,19 @@ class Creatures {
             request.addValue("7VXRDbwotsJPAYo24rBa6DQClFVGGYP7", forHTTPHeaderField: "Apikey")
         
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (data, _) = try await URLSession.shared.data(for: request)
            
             // try to decode JSON here
             
-            //VERSION 2: MAPPING
-            do {
-              let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .custom(<#T##([any CodingKey]) -> any CodingKey##([any CodingKey]) -> any CodingKey##(_ codingPath: [any CodingKey]) -> any CodingKey#>)
-              let returned = try? decoder.decode(Returned.self, from: data)
-                print("data: \(returned?.Season)")
-            } catch {
-              print(error)
-            }
-            
-            //VERSION 1: PROF G
-//            guard let returned = try? JSONDecoder().decode(Returned.self, from: data) else {
+//            VERSION 1: PROF G
+            guard let returned = try? JSONDecoder().decode(Returned.self, from: data) else {
 //                print(data)
 //                print(response)
-//                print("JSON ERROR: Could not decode returned JSON")
-//                return
-//            }
-            print("VICTORY! JSON RETURNED")
+                print("JSON ERROR: Could not decode returned JSON")
+//                print(String(data: data, encoding: .utf8)!)
+                return
+            }
+            print("VICTORY! JSON RETURNED teams: \(returned.teams[0].countryCode)")
             
         } catch {
             print("ERROR: Could not get data from \(url)")
