@@ -9,20 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
     
-    var creatures = Creatures()
+    @State var driverData = DriverData()
     
     var body: some View {
         NavigationStack{
-            VStack {
-                Image(systemName: "globe")
-                    .imageScale(.large)
-                    .foregroundStyle(.tint)
-                Text("Hello, world!")
+            ScrollView {
+                VStack {
+                    Text("drivers by ID: \(driverData.driversByID)")
+                }
+                .padding()
             }
-            .padding()
         }
         .task{
-            await creatures.getData()
+            await driverData.getData()
         }
     }
 }
