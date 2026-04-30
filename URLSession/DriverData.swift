@@ -9,9 +9,9 @@ import SwiftUI
 import SwiftSoup
 
 @Observable
-class Creatures {
+class DriverData {
     
-    private struct Returned: Codable {
+    struct Returned: Codable {
         var season: Season
         var teams: [Team]
         var otherSeriesTeamsAndDriversUrls: OtherSeriesTeamsAndDriversUrls
@@ -23,11 +23,11 @@ class Creatures {
         }
     }
 
-    private struct OtherSeriesTeamsAndDriversUrls: Codable {
+    struct OtherSeriesTeamsAndDriversUrls: Codable {
         var f1, f2, f3: String
     }
 
-    private struct Season: Codable {
+    struct Season: Codable {
         var seasonID: Int
         var seasonName, seasonStartDate, seasonEndDate, seasonTypeCode: String
         var hasResultFeed: Bool
@@ -42,7 +42,7 @@ class Creatures {
         }
     }
 
-    private struct Team: Codable {
+    struct Team: Codable {
         var teamID: Int
         var teamFullName, tla: String
         var countryID: Int
@@ -62,12 +62,12 @@ class Creatures {
         }
     }
 
-    private struct Image: Codable {
+    struct Image: Codable {
         var path: String
         var url: String
     }
 
-    private struct Driver: Codable {
+    struct Driver: Codable {
         var driverID: Int
         var fullName, displayName, tla: String
         var countryID: Int
@@ -89,8 +89,9 @@ class Creatures {
             case driverImage, support, driverWithoutBackgroundImage
         }
     }
-
-    
+// MARK: build new data structure here, where variable names make sense...
+    var teams: [Team] = []
+    var teamID: Int = 0
     
     
     var urlString = "https://api.formula1.com/v1/f2f3-fom-results/teamsanddrivers?website=fa"
@@ -114,13 +115,15 @@ class Creatures {
             
 //            VERSION 1: PROF G
             guard let returned = try? JSONDecoder().decode(Returned.self, from: data) else {
-//                print(data)
-//                print(response)
                 print("JSON ERROR: Could not decode returned JSON")
-//                print(String(data: data, encoding: .utf8)!)
                 return
             }
-            print("VICTORY! JSON RETURNED teams: \(returned.teams[0].countryCode)")
+// MARK: other half of returned data formatting
+            
+            self.teams = returned.teams
+            self.teamID = returned.teams[0].teamID
+            
+            print("VICTORY! JSON RETURNED")
             
         } catch {
             print("ERROR: Could not get data from \(url)")
