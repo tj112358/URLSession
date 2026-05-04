@@ -6,22 +6,26 @@
 //
 
 import SwiftUI
+import SwiftSoup
 
 struct ContentView: View {
     
     @State var driverData = DriverData()
-    
+    @State var myDocument : Document = Document("")
+
     var body: some View {
+        @State var headline = try! myDocument.select("div.row div.article-listing-card--item:eq(4) .font-text-body")
+
         NavigationStack{
             ScrollView {
                 VStack {
-                    Text("drivers by ID: \(driverData.driversByID)")
+                    Text("Headline 1: \(try! headline.text())")
                 }
                 .padding()
             }
         }
         .task{
-            await driverData.getData()
+            myDocument = await scrapeFromSite(url: "https://www.f1academy.com/Latest")!
         }
     }
 }
