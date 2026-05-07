@@ -11,21 +11,20 @@ import SwiftSoup
 struct ContentView: View {
     
     @State var driverData = DriverData()
-    @State var myDocument : Document = Document("")
+    @State var news: [Any] = []
 
     var body: some View {
-        @State var headline = try! myDocument.select("div.row div.article-listing-card--item:eq(4) .font-text-body")
 
         NavigationStack{
             ScrollView {
                 VStack {
-                    Text("Headline 1: \(try! headline.text())")
+                    Text("Headline 1: \(news)")
                 }
                 .padding()
             }
         }
-        .task{
-            myDocument = await scrapeFromSite(url: "https://www.f1academy.com/Latest")!
+        .task {
+            news = await scrapeNews()!
         }
     }
 }

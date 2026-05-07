@@ -13,9 +13,9 @@ import SwiftSoup
 //c: not doing this correctly... should just put this code directly in the task block, and save me the trouble of finding the variables?
 
 
-func scrapeFromSite(url: String) async -> Document? {
+func scrapeNews() async -> Array<newsCard>? {
     
-    let urlString = url
+    let urlString = "https://www.f1academy.com/Latest"
     
     print("Accessing the URL \(urlString)")
     
@@ -44,7 +44,21 @@ func scrapeFromSite(url: String) async -> Document? {
             return nil
         }
         
-        return myDocument
+        //create the newsArray with the scraped document, and return the news
+        var news = [newsCard]()
+        
+        for i in 0...19 {
+            let headline = try! myDocument.select("div.row div.article-listing-card--item:eq(\(i)) .font-text-body")
+            let title = try! myDocument.select("div.row div.article-listing-card--item:eq(\(i)) .font-tag")
+            let address = try! myDocument.select("div.row div.article-listing-card--item:eq(\(i)) a")
+            let addressNew = ("https://www.f1academy.com" + "\(try! address.attr("href"))")
+            let image = try! myDocument.select("div.row div.article-listing-card--item:eq(\(i)) a div.f1-cc--image img.f1-cc--photo")
+            let imageNew = "\(try! image.attr("data-src"))"
+            
+            news.append(newsCard(headline: "\(try! headline.text())", title: "\(try! title.text())", image: imageNew, address: addressNew))
+        }
+        print(news)
+        return news
         
     } catch {
         print("ERROR: Could not get data from \(url)")
