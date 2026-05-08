@@ -57,7 +57,7 @@ func scrapeNews() async -> Array<newsCard>? {
             
             news.append(newsCard(headline: "\(try! headline.text())", title: "\(try! title.text())", image: imageNew, address: addressNew))
         }
-        print(news)
+//        print(news)
         return news
         
     } catch {

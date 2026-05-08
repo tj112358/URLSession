@@ -10,21 +10,24 @@ import SwiftSoup
 
 struct ContentView: View {
     
-    @State var driverData = DriverData()
     @State var news: [Any] = []
+    @State var standings: [Any] = []
 
     var body: some View {
 
         NavigationStack{
             ScrollView {
                 VStack {
-                    Text("Headline 1: \(news)")
+//                    Text("Headline 1: \(news)")
+//                    Text("driverData: \(driverData.driversByID)")
+                    Text("standings: \(standings)")
                 }
                 .padding()
             }
         }
         .task {
             news = await scrapeNews()!
+            standings = await scrapeStandings(url: "https://www.f1academy.com/Racing-Series/Standings/Driver?seasonId=4", seasonTotalDrivers: 18)!
         }
     }
 }
