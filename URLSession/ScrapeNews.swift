@@ -1,5 +1,5 @@
 //
-//  Webscraping.swift
+//  ScrapeNews.swift
 //  URLSession
 //
 //  Created by Thea Yocum on 4/30/26.
